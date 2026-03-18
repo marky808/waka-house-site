@@ -88,7 +88,9 @@ $token = $_SESSION['csrf_token'];
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>お問合せ | 株式会社WAKA</title>
-  <meta name="description" content="株式会社WAKAへのお問合せページです。家づくりに関するご相談はお気軽にお問合せください。">
+  <meta name="description" content="株式会社WAKAへのお問合せページです。家づくりに関する無料相談・ご質問はお気軽にどうぞ。電話（050-8892-0110）・LINE・フォームからご連絡いただけます。">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="assets/images/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">

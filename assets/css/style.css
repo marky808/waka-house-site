@@ -13,25 +13,25 @@
 }
 
 :root {
-  --color-primary: #1A2E4A;
-  --color-primary-light: #2C4A6E;
-  --color-primary-dark: #0F1D30;
-  --color-accent: #8B6F47;
-  --color-accent-light: #A68960;
-  --color-accent-pale: #D4C4A8;
+  --color-primary: #1A6BB5;
+  --color-primary-light: #3A8AD4;
+  --color-primary-dark: #0d3d6e;
+  --color-accent: #1A6BB5;
+  --color-accent-light: #3A8AD4;
+  --color-accent-pale: #B3D4F0;
   --color-white: #ffffff;
-  --color-offwhite: #F8F7F4;
-  --color-cream: #F0EDE6;
-  --color-gray-light: #E5E1DB;
-  --color-gray: #9A9590;
-  --color-text: #2C2C2C;
-  --color-text-light: #5A5A5A;
+  --color-offwhite: #EBF4FF;
+  --color-cream: #DCE9F7;
+  --color-gray-light: #CFE0F2;
+  --color-gray: #7EA8C8;
+  --color-text: #0d3d6e;
+  --color-text-light: #4a7ea8;
   --color-line: #06C755;
   --font-main: 'Noto Sans JP', sans-serif;
-  --shadow-sm: 0 2px 12px rgba(26, 46, 74, 0.06);
-  --shadow-md: 0 6px 24px rgba(26, 46, 74, 0.10);
-  --shadow-lg: 0 12px 48px rgba(26, 46, 74, 0.14);
-  --shadow-card: 0 4px 16px rgba(26, 46, 74, 0.07);
+  --shadow-sm: 0 2px 12px rgba(26, 107, 181, 0.06);
+  --shadow-md: 0 6px 24px rgba(26, 107, 181, 0.10);
+  --shadow-lg: 0 12px 48px rgba(26, 107, 181, 0.14);
+  --shadow-card: 0 4px 16px rgba(26, 107, 181, 0.07);
   --radius: 12px;
   --radius-lg: 20px;
   --radius-xl: 28px;
@@ -177,8 +177,8 @@ ul, ol {
   display: block;
   max-width: 100%;
   height: auto;
-  /* CSS filter to shift unDraw default purple (#6c63ff) toward navy #1A2E4A */
-  filter: hue-rotate(-40deg) saturate(0.5) brightness(0.55);
+  /* CSS filter to shift unDraw default purple (#6c63ff) toward blue #1A6BB5 */
+  filter: hue-rotate(-10deg) saturate(0.7) brightness(0.7);
 }
 
 .illust-sm {
@@ -424,7 +424,7 @@ ul, ol {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 29, 48, 0.5);
+  background: rgba(10, 42, 74, 0.5);
   z-index: 998;
   opacity: 0;
   transition: opacity var(--transition);
@@ -450,7 +450,7 @@ ul, ol {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, #3a2e1e 0%, #5a4a3a 30%, #8a7a6a 60%, #c4b8a5 100%);
+  background: linear-gradient(160deg, #0a2a4a 0%, #0d3d6e 30%, #1A6BB5 60%, #5aa0d6 100%);
   z-index: 0;
 }
 
@@ -460,9 +460,9 @@ ul, ol {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(26, 46, 74, 0.5) 0%,
-    rgba(26, 46, 74, 0.3) 50%,
-    rgba(26, 46, 74, 0.6) 100%
+    rgba(13, 61, 110, 0.55) 0%,
+    rgba(26, 107, 181, 0.3) 50%,
+    rgba(10, 42, 74, 0.65) 100%
   );
 }
 
@@ -513,13 +513,13 @@ ul, ol {
   font-weight: 600;
   letter-spacing: 0.04em;
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-  box-shadow: 0 4px 24px rgba(139, 111, 71, 0.4);
+  box-shadow: 0 4px 24px rgba(26, 107, 181, 0.4);
 }
 
 .hero-cta:hover {
   background: var(--color-accent-light);
   transform: translateY(-3px);
-  box-shadow: 0 8px 36px rgba(139, 111, 71, 0.5);
+  box-shadow: 0 8px 36px rgba(26, 107, 181, 0.5);
 }
 
 .hero-scroll {
@@ -628,7 +628,7 @@ ul, ol {
 .about-image .placeholder-img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  background: linear-gradient(135deg, #d4c5b0 0%, #e8ddd0 50%, #c4b8a5 100%);
+  background: linear-gradient(135deg, #B3D4F0 0%, #DCE9F7 50%, #EBF4FF 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -689,7 +689,7 @@ ul, ol {
 .btn-accent:hover {
   background: var(--color-accent-light);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(139, 111, 71, 0.3);
+  box-shadow: 0 4px 16px rgba(26, 107, 181, 0.3);
 }
 
 /* ============================================
@@ -845,7 +845,7 @@ ul, ol {
 
 .cta-btn--contact:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 24px rgba(139, 111, 71, 0.4);
+  box-shadow: 0 6px 24px rgba(26, 107, 181, 0.4);
 }
 
 /* ============================================
@@ -1052,7 +1052,7 @@ ul, ol {
    ============================================ */
 .page-header {
   padding: 160px 0 72px;
-  background: linear-gradient(160deg, var(--color-offwhite) 0%, var(--color-cream) 50%, #e8e0d4 100%);
+  background: linear-gradient(160deg, var(--color-offwhite) 0%, var(--color-cream) 50%, #c5daf0 100%);
   text-align: center;
   position: relative;
 }

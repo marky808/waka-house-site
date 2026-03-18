@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // --- Fade-in on scroll (Intersection Observer) ---
-  var fadeElements = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right');
+  var fadeElements = document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .fade-in-stagger');
   if (fadeElements.length > 0 && 'IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     fadeElements.forEach(function (el) {
       observer.observe(el);

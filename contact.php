@@ -1,4 +1,8 @@
 <?php
+// reCAPTCHA v3 設定
+define('RECAPTCHA_SITE_KEY', '6Lfq5I4sAAAAAJuHwjVza5RuuS5IFr8UWO7myxGD');
+define('RECAPTCHA_SECRET_KEY', '6Lfq5I4sAAAAACXcsqicU18fDCKctMxBd7XZ5Veq');
+
 // 送信処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // CSRF簡易対策
@@ -17,6 +21,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($name === '') $errors[] = 'お名前を入力してください。';
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = '正しいメールアドレスを入力してください。';
     if ($message === '') $errors[] = 'お問合せ内容を入力してください。';
+
+    // reCAPTCHA v3 検証
+    if (empty($errors)) {
+        $recaptcha_token = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : '';
+        if ($recaptcha_token === '') {
+            $errors[] = 'reCAPTCHA認証に失敗しました。ページを再読み込みしてください。';
+        } else {
+            $verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+            $verify_data = http_build_query([
+                'secret'   => RECAPTCHA_SECRET_KEY,
+                'response' => $recaptcha_token,
+                'remoteip' => $_SERVER['REMOTE_ADDR'],
+            ]);
+            $verify_opts = [
+                'http' => [
+                    'method'  => 'POST',
+                    'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                    'content' => $verify_data,
+                ],
+            ];
+            $verify_context = stream_context_create($verify_opts);
+            $verify_response = file_get_contents($verify_url, false, $verify_context);
+            $recaptcha_result = json_decode($verify_response, true);
+
+            if (!$recaptcha_result['success'] || $recaptcha_result['score'] < 0.5) {
+                $errors[] = 'スパム判定されました。お手数ですがお電話にてご連絡ください。';
+            }
+        }
+    }
 
     if (empty($errors)) {
         $to      = 'info@waka-house.co.jp';
@@ -60,6 +93,7 @@ $token = $_SESSION['csrf_token'];
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://www.google.com/recaptcha/api.js?render=<?php echo RECAPTCHA_SITE_KEY; ?>"></script>
 </head>
 <body>
 
@@ -68,11 +102,7 @@ $token = $_SESSION['csrf_token'];
     <div class="container">
       <div class="header-logo">
         <a href="index.html">
-          <span class="logo-mark">W</span>
-          <span>
-            株式会社WAKA
-            <span class="logo-sub">いえサポ</span>
-          </span>
+          <img src="assets/images/logo.png" alt="株式会社WAKA" class="header-logo-img">
         </a>
       </div>
       <nav class="nav-desktop">
@@ -128,6 +158,7 @@ $token = $_SESSION['csrf_token'];
       <div class="contact-form fade-in">
         <form action="contact.php" method="POST">
           <input type="hidden" name="token" value="<?php echo htmlspecialchars($token, ENT_QUOTES, 'UTF-8'); ?>">
+          <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
 
           <div class="form-group">
             <label>お名前 <span class="required">必須</span></label>
@@ -149,8 +180,11 @@ $token = $_SESSION['csrf_token'];
             <textarea name="message" placeholder="ご相談内容をご記入ください" required><?php echo isset($message) ? htmlspecialchars($message, ENT_QUOTES, 'UTF-8') : ''; ?></textarea>
           </div>
 
-          <p style="font-size: 0.85rem; color: #666; text-align: center; margin-bottom: 24px;">
+          <p style="font-size: 0.85rem; color: #666; text-align: center; margin-bottom: 16px;">
             <a href="privacy.html" style="color: var(--color-primary); text-decoration: underline;">プライバシーポリシー</a>に同意の上、送信してください。
+          </p>
+          <p style="font-size: 0.72rem; color: #999; text-align: center; margin-bottom: 24px;">
+            このサイトはreCAPTCHA v3で保護されています。Googleの<a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color: #999; text-decoration: underline;">プライバシーポリシー</a>と<a href="https://policies.google.com/terms" target="_blank" rel="noopener" style="color: #999; text-decoration: underline;">利用規約</a>が適用されます。
           </p>
 
           <div class="form-submit">
@@ -169,10 +203,10 @@ $token = $_SESSION['csrf_token'];
           <div class="logo">株式会社WAKA</div>
           <p>〒160-0023<br>東京都新宿区西新宿3-3-13<br>西新宿水間ビル2F</p>
           <div class="footer-sns">
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+            <a href="https://www.instagram.com/waka_iesapo/" target="_blank" rel="noopener" aria-label="Instagram">
               <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
             </a>
-            <a href="https://line.me/" target="_blank" rel="noopener" aria-label="LINE">
+            <a href="https://lin.ee/kRTWrUI" target="_blank" rel="noopener" aria-label="LINE">
               <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 5.82 2 10.5c0 4.21 3.74 7.74 8.78 8.4.34.07.8.23.92.52.1.27.07.68.03.95l-.15.9c-.04.27-.2 1.05.92.57s6.13-3.61 8.36-6.18C22.63 13.59 22 12.11 22 10.5 22 5.82 17.52 2 12 2z"/></svg>
             </a>
           </div>
@@ -200,7 +234,7 @@ $token = $_SESSION['csrf_token'];
 
   <!-- Floating CTA (PC) -->
   <div class="floating-cta">
-    <a href="https://line.me/" class="float-line" target="_blank" rel="noopener">
+    <a href="https://lin.ee/kRTWrUI" class="float-line" target="_blank" rel="noopener">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.82 2 10.5c0 4.21 3.74 7.74 8.78 8.4.34.07.8.23.92.52.1.27.07.68.03.95l-.15.9c-.04.27-.2 1.05.92.57s6.13-3.61 8.36-6.18C22.63 13.59 22 12.11 22 10.5 22 5.82 17.52 2 12 2z"/></svg>
       LINEで相談
     </a>
@@ -212,7 +246,7 @@ $token = $_SESSION['csrf_token'];
 
   <!-- Fixed CTA (Mobile) -->
   <div class="fixed-cta-mobile">
-    <a href="https://line.me/" class="cta-line" target="_blank" rel="noopener">
+    <a href="https://lin.ee/kRTWrUI" class="cta-line" target="_blank" rel="noopener">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 5.82 2 10.5c0 4.21 3.74 7.74 8.78 8.4.34.07.8.23.92.52.1.27.07.68.03.95l-.15.9c-.04.27-.2 1.05.92.57s6.13-3.61 8.36-6.18C22.63 13.59 22 12.11 22 10.5 22 5.82 17.52 2 12 2z"/></svg>
       LINE
     </a>
@@ -223,5 +257,17 @@ $token = $_SESSION['csrf_token'];
   </div>
 
   <script src="assets/js/main.js"></script>
+  <script>
+    document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var form = this;
+      grecaptcha.ready(function() {
+        grecaptcha.execute('<?php echo RECAPTCHA_SITE_KEY; ?>', {action: 'contact'}).then(function(token) {
+          document.getElementById('g-recaptcha-response').value = token;
+          form.submit();
+        });
+      });
+    });
+  </script>
 </body>
 </html>

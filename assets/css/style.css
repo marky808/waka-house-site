@@ -1391,6 +1391,11 @@ ul, ol {
    Responsive
    ============================================ */
 @media (max-width: 768px) {
+  /* Hide decorative line breaks on mobile for natural text flow */
+  br.pc-only {
+    display: none;
+  }
+
   .container {
     padding: 0 20px;
   }

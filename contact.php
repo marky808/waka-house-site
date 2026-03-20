@@ -146,7 +146,7 @@ $token = $_SESSION['csrf_token'];
         <img src="https://cdn.undraw.co/illustration/message-sent_iyz6.svg" alt="お問い合わせ" class="illust illust-lg" style="max-width: 280px; margin: 0 auto;">
       </div>
       <div class="service-intro fade-in" style="margin-bottom: 48px;">
-        <p>家づくりに関するご質問・ご相談はお気軽にお問合せください。<br>担当者より折り返しご連絡いたします。</p>
+        <p>家づくりに関するご質問・ご相談はお気軽にお問合せください。<br class="pc-only">担当者より折り返しご連絡いたします。</p>
       </div>
 
       <?php if (!empty($errors)): ?>

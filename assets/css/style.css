@@ -1412,19 +1412,43 @@ ul, ol {
     display: block;
   }
 
+  .hero {
+    height: auto;
+    min-height: 0;
+    padding: 120px 0 60px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
   .hero-content .catchcopy {
-    font-size: 2rem;
+    font-size: 1.8rem;
     letter-spacing: 0.03em;
+    margin-bottom: 16px;
   }
 
   .hero-content .subcopy {
-    font-size: 0.92rem;
-    margin-bottom: 36px;
+    font-size: 0.88rem;
+    margin-bottom: 28px;
+    line-height: 1.8;
   }
 
   .hero-cta {
-    padding: 15px 36px;
-    font-size: 0.92rem;
+    padding: 14px 32px;
+    font-size: 0.88rem;
+  }
+
+  .hero-tel a {
+    font-size: 1.2rem;
+  }
+
+  .hero-tel span {
+    font-size: 0.68rem;
+  }
+
+  .hero-scroll {
+    display: none;
   }
 
   .features-grid {
